@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>リンさんのこと好き？</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap">
+<style>
+/* Layout: one centered card. A play arena holds a runaway Yes and a No that grows with every dodge; the card swaps to a crying face at the end. */
+:root {
+  --bg: #E9F3FF;
+  --card: #FFFFFF;
+  --fg: #1E2A44;
+  --muted: #5C6B88;
+  --line: #CFE0F5;
+  --yes: #FF4F8B;
+  --yes-fg: #FFFFFF;
+  --no: #3B4A6B;
+  --no-fg: #FFFFFF;
+  --font: 'Zen Maru Gothic', 'Hiragino Maru Gothic ProN', 'Hiragino Sans', 'Yu Gothic', system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0F1626;
+    --card: #19233A;
+    --fg: #EEF3FF;
+    --muted: #9AA9C7;
+    --line: #263556;
+    --yes: #FF6FA0;
+    --yes-fg: #2A0A18;
+    --no: #7C93C4;
+    --no-fg: #0F1626;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0F1626;
+  --card: #19233A;
+  --fg: #EEF3FF;
+  --muted: #9AA9C7;
+  --line: #263556;
+  --yes: #FF6FA0;
+  --yes-fg: #2A0A18;
+  --no: #7C93C4;
+  --no-fg: #0F1626;
+  color-scheme: dark;
+}
+
+html { height: 100%; }
+body {
+  min-height: 100%;
+  display: flex; flex-direction: column; justify-content: center;
+  background: var(--bg); color: var(--fg);
+  font-family: var(--font); font-size: 16px; line-height: 1.7;
+  word-break: auto-phrase; line-break: strict;
+  padding-block: 24px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.card {
+  width: 100%; max-width: 520px; margin: 0 auto;
+  background: var(--card); border: 1px solid var(--line); border-radius: 20px;
+  padding: 28px 20px 24px; display: flex; flex-direction: column; gap: 18px;
+  overflow: hidden;
+}
+h1 { margin: 0; font-weight: 900; font-size: clamp(26px, 7.5vw, 36px); line-height: 1.35; text-align: center; text-wrap: balance; }
+.sub { margin: 0; text-align: center; color: var(--muted); font-size: 14px; }
+
+.arena {
+  position: relative; min-height: 260px;
+  display: grid; grid-template-columns: 1fr 1fr; align-items: center; justify-items: center;
+  gap: 8px;
+}
+.arena.full { grid-template-columns: 1fr; }
+.arena.full #no { grid-column: 1 / -1; }
+#no { grid-column: 2; max-width: 100%; }
+
+button.choice {
+  font-family: var(--font); font-weight: 900; border: 0; cursor: pointer;
+  border-radius: 999px; padding: 0.7em 1.7em; line-height: 1.2; font-size: 18px;
+  min-height: 48px;
+}
+button.choice:focus-visible { outline: 3px solid var(--fg); outline-offset: 3px; }
+#yes {
+  position: absolute; z-index: 2; background: var(--yes); color: var(--yes-fg);
+  transition: left .2s ease, top .2s ease, transform .2s ease, opacity .2s ease;
+  touch-action: manipulation;
+}
+#no { background: var(--no); color: var(--no-fg); transition: font-size .25s ease; }
+
+.msg { margin: 0; min-height: 3.4em; text-align: center; font-weight: 700; font-size: 17px; text-wrap: balance; }
+
+.result { display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; }
+.result svg { width: min(260px, 70%); height: auto; }
+.result h2 { margin: 0; font-size: clamp(22px, 6vw, 28px); font-weight: 900; line-height: 1.4; text-wrap: balance; }
+.again { background: transparent; color: var(--muted); border: 1px solid var(--line); font-size: 14px; padding: 0.6em 1.4em; }
+
+.tear { transform-origin: top center; animation: flow 1.3s ease-in infinite; }
+.tear.r { animation-delay: .35s; }
+.drop { animation: fall 1.3s ease-in infinite; }
+.drop.d2 { animation-delay: .5s; }
+@keyframes flow { 0% { transform: scaleY(.15); opacity: .9; } 70% { transform: scaleY(1); opacity: .9; } 100% { transform: scaleY(1); opacity: 0; } }
+@keyframes fall { 0% { transform: translateY(0); opacity: 0; } 20% { opacity: 1; } 100% { transform: translateY(60px); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .tear, .drop { animation: none; }
+  #yes, #no { transition: none; }
+}
+</style>
+
+</head>
+<body>
+<main class="card" lang="ja">
+  <section id="quiz" aria-labelledby="q">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <h1 id="q">リンさんのこと好き？👉👈</h1>
+      <p class="sub">ほんとうの気持ちを教えてね</p>
+      <div id="arena" class="arena">
+        <button id="yes" class="choice" type="button">Yes</button>
+        <button id="no" class="choice" type="button">No</button>
+      </div>
+      <p id="msg" class="msg" aria-live="polite">さあ、どっちかな？</p>
+    </div>
+  </section>
+
+  <section id="result" class="result" hidden>
+    <svg viewBox="0 0 200 200" role="img" aria-label="大泣きしている顔のイラスト">
+      <rect class="tear" x="58" y="104" width="14" height="72" rx="7" fill="#58B7F5"/>
+      <rect class="tear r" x="128" y="104" width="14" height="72" rx="7" fill="#58B7F5"/>
+      <circle cx="100" cy="100" r="80" fill="#FFCB47" stroke="#E5A526" stroke-width="4"/>
+      <rect class="tear" x="58" y="104" width="14" height="72" rx="7" fill="#58B7F5" opacity=".85"/>
+      <rect class="tear r" x="128" y="104" width="14" height="72" rx="7" fill="#58B7F5" opacity=".85"/>
+      <circle cx="52" cy="122" r="11" fill="#FF8FA3" opacity=".55"/>
+      <circle cx="148" cy="122" r="11" fill="#FF8FA3" opacity=".55"/>
+      <path d="M62 80 L90 94 L62 108" fill="none" stroke="#5A3A00" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M138 80 L110 94 L138 108" fill="none" stroke="#5A3A00" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M68 150 Q100 104 132 150 Q100 138 68 150Z" fill="#7A2E2E" stroke="#5A1F1F" stroke-width="3" stroke-linejoin="round"/>
+      <ellipse cx="100" cy="143" rx="11" ry="5" fill="#FF7B8F"/>
+      <path class="drop" d="M30 70 q8 14 0 20 q-8 -6 0 -20z" fill="#58B7F5"/>
+      <path class="drop d2" d="M172 62 q8 14 0 20 q-8 -6 0 -20z" fill="#58B7F5"/>
+    </svg>
+    <h2>やっぱりね…知ってたよ。<br>悲しすぎる…😭</h2>
+    <button id="again" class="choice again" type="button">もう一度やってみる</button>
+  </section>
+</main>
+
+<script>
+(function () {
+  var arena = document.getElementById('arena');
+  var yes = document.getElementById('yes');
+  var no = document.getElementById('no');
+  var msg = document.getElementById('msg');
+  var quiz = document.getElementById('quiz');
+  var result = document.getElementById('result');
+  var again = document.getElementById('again');
+
+  var lines = [
+    'あれ？手がすべったかな？😳',
+    'Yesはシャイなんだよ〜',
+    'ちょっと待って、逃げちゃった！',
+    '本当はYesを押したいんでしょ？👀',
+    'Yesは今日はお休みです🛌',
+    'つかまえられるかな？ふふっ',
+    'Noのボタンが大きくなってきたよ…',
+    'もう、Noしか見えないね？',
+    '観念してNoを押そう？😌',
+    'Yesは遠くへ旅に出ました✈️',
+    'ほら、Noが待ってるよ…'
+  ];
+
+  var n = 0, moved = false, lastMove = 0, lastCount = 0;
+
+  function place(x, y) { yes.style.left = x + 'px'; yes.style.top = y + 'px'; }
+
+  function home() {
+    var r = arena.getBoundingClientRect();
+    var w = yes.offsetWidth, h = yes.offsetHeight;
+    place(r.width * 0.25 - w / 2, r.height / 2 - h / 2);
+  }
+
+  function grow() {
+    no.style.fontSize = Math.min(18 + n * 4, 56) + 'px';
+    if (n >= 6) arena.classList.add('full');
+    var s = Math.max(0.55, 1 - n * 0.05);
+    yes.style.transform = 'scale(' + s + ')';
+    yes.style.opacity = n >= 10 ? '0.55' : '1';
+  }
+
+  function dodge(clientX, clientY) {
+    var now = Date.now();
+    if (now - lastMove < 150) return;
+    lastMove = now;
+    moved = true;
+
+    var r = arena.getBoundingClientRect();
+    var w = yes.offsetWidth, h = yes.offsetHeight;
+    var maxX = Math.max(0, r.width - w), maxY = Math.max(0, r.height - h);
+    var px = (clientX == null ? r.width / 2 : clientX - r.left);
+    var py = (clientY == null ? r.height / 2 : clientY - r.top);
+
+    var best = null, bestD = -1;
+    for (var i = 0; i < 16; i++) {
+      var x = Math.random() * maxX, y = Math.random() * maxY;
+      var d = Math.hypot(x + w / 2 - px, y + h / 2 - py);
+      if (d > bestD) { bestD = d; best = [x, y]; }
+      if (d > 170) { best = [x, y]; break; }
+    }
+    place(best[0], best[1]);
+
+    if (now - lastCount > 500) {
+      lastCount = now;
+      msg.textContent = lines[Math.min(n, lines.length - 1)];
+      n += 1;
+      grow();
+    }
+  }
+
+  document.addEventListener('pointermove', function (e) {
+    if (result.hidden === false) return;
+    var b = yes.getBoundingClientRect();
+    var d = Math.hypot(b.left + b.width / 2 - e.clientX, b.top + b.height / 2 - e.clientY);
+    if (d < 90) dodge(e.clientX, e.clientY);
+  });
+  yes.addEventListener('pointerdown', function (e) { e.preventDefault(); dodge(e.clientX, e.clientY); });
+  yes.addEventListener('click', function (e) { e.preventDefault(); dodge(e.clientX, e.clientY); });
+  yes.addEventListener('focus', function () { dodge(null, null); yes.blur(); });
+
+  no.addEventListener('click', function () {
+    quiz.hidden = true;
+    result.hidden = false;
+  });
+
+  again.addEventListener('click', function () {
+    n = 0; moved = false; lastMove = 0; lastCount = 0;
+    arena.classList.remove('full');
+    no.style.fontSize = '';
+    yes.style.transform = ''; yes.style.opacity = '';
+    msg.textContent = 'さあ、どっちかな？';
+    result.hidden = true;
+    quiz.hidden = false;
+    home();
+  });
+
+  window.addEventListener('resize', function () { if (!moved) home(); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { if (!moved) home(); });
+  home();
+})();
+</script>
+
+</body>
+</html>
